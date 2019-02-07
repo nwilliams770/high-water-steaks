@@ -1,5 +1,6 @@
 import React from 'react';
 import Axes from './axes';
+import Bars from './bars';
 import { scaleBand, scaleLinear } from 'd3-scale';
 
 class BarChart extends React.Component {
@@ -62,6 +63,13 @@ class BarChart extends React.Component {
                     svgDimensions={svgDimensions}
                     margins={margins}
                     emojis={emojis}
+                />
+                <Bars
+                    scales={{ xScale, yScale }}
+                    svgDimensions={svgDimensions}
+                    margins={margins}
+                    data={data}
+                    maxValue={maxValue}
                 />
             </svg>
         )
