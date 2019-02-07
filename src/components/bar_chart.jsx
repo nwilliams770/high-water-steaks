@@ -24,36 +24,21 @@ class BarChart extends React.Component {
         }
     }
 
-    // This may not work either 
     findMaxValue(data) {
-        const allValues = Object.values(data).map(obj => {
-            return Object.values(obj)
-        }).flat().map((value) =>  this.roundNumber(parseFloat(value), 2))
-
-        console.log("MAX Value");
-        console.log(Math.max(...allValues))
-
-        // console.log(parseFloat("277.0024291"))
-        return Math.max(...allValues);
+        // https://stackoverflow.com/questions/4020796/finding-the-max-value-of-an-attribute-in-an-array-of-objects
+        return Math.max.apply(Math, data.map(obj => obj.total ));
     }
 
-
-
-
-
     render() {
-        const { svgDimensions, margins, data, emojis, year } = this.props
+        const { svgDimensions, margins, data, emojis, year } = this.props;
+        // const dataByCountry = this.sortDataByCountry(data);
         const maxValue = this.findMaxValue(data);
-
-        console.log(maxValue)
-
         const xScale = this.xScale
                         .padding(0.5)
                         .domain(Object.values(emojis))
                         .rangeRound([margins.left, svgDimensions.width - margins.right]);
-        
         const yScale = this.yScale
-                        .domain([0, 2])
+                        .domain([0, maxValue + (0.10 * maxValue)])
                         .range([svgDimensions.height - margins.bottom, margins.top]);
         return (
             // <svg width={`${svgDimensions.width}`} height={`${svgDimensions.height}`} viewBox={`0 0 ${svgDimensions.width} ${svgDimensions.height}`} preserveAspectRatio='xMidYMid meet'>
@@ -62,14 +47,15 @@ class BarChart extends React.Component {
                     scales={{ xScale, yScale }}
                     svgDimensions={svgDimensions}
                     margins={margins}
-                    emojis={emojis}
                 />
                 <Bars
                     scales={{ xScale, yScale }}
                     svgDimensions={svgDimensions}
                     margins={margins}
                     data={data}
+                    // dataByCountry={dataByCountry}
                     maxValue={maxValue}
+                    emojis={emojis}
                 />
             </svg>
         )

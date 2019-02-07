@@ -1,7 +1,7 @@
 import React from 'react';
 import Axis from './axis';
 
-export default ({ scales, svgDimensions, margins, emojis}) => {
+export default ({ scales, svgDimensions, margins }) => {
     const { height, width } = svgDimensions;
 
     const xProps = {
