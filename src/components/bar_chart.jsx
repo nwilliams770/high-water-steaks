@@ -10,20 +10,6 @@ class BarChart extends React.Component {
         this.yScale = scaleLinear();
     }
 
-    // taken from https://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-only-if-necessary
-    roundNumber(num, scale) {
-        if(!("" + num).includes("e")) {
-          return +(Math.round(num + "e+" + scale)  + "e-" + scale);
-        } else {
-          var arr = ("" + num).split("e");
-          var sig = ""
-          if(+arr[1] + scale > 0) {
-            sig = "+";
-          }
-          return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + scale)) + "e-" + scale);
-        }
-    }
-
     findMaxValue(data) {
         // https://stackoverflow.com/questions/4020796/finding-the-max-value-of-an-attribute-in-an-array-of-objects
         return Math.max.apply(Math, data.map(obj => obj.total ));
@@ -31,7 +17,6 @@ class BarChart extends React.Component {
 
     render() {
         const { svgDimensions, margins, data, emojis, year } = this.props;
-        // const dataByCountry = this.sortDataByCountry(data);
         const maxValue = this.findMaxValue(data);
         const xScale = this.xScale
                         .padding(0.5)
@@ -53,7 +38,6 @@ class BarChart extends React.Component {
                     svgDimensions={svgDimensions}
                     margins={margins}
                     data={data}
-                    // dataByCountry={dataByCountry}
                     maxValue={maxValue}
                     emojis={emojis}
                 />
