@@ -10,8 +10,7 @@ export default ({ scales, svgDimensions, margins }) => {
         translate: `translate(0, ${height - margins.bottom})`,
         tickSize: height - margins.top - margins.bottom,
       }
-    
-      const yProps = {
+    const yProps = {
         orient: 'Left',
         scale: scales.yScale,
         translate: `translate(${margins.left}, 0)`,
@@ -19,7 +18,7 @@ export default ({ scales, svgDimensions, margins }) => {
       }
     
     return (
-        <g>
+        <g className="axes">
           <Axis {...xProps} />
           <Axis {...yProps} />
         </g>
