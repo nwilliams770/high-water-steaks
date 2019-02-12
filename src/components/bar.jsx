@@ -1,67 +1,108 @@
 import React from 'react';
 import { select } from 'd3-selection';
 import * as d3 from 'd3';
-import { transition } from 'd3-transition';
+import 'd3-transition';
 
 class Bar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             y: props.y,
+            opacity: props.opacity,
+            height: props.height
         }
         this.barRef = React.createRef();
     }
-
-    // So what are we tracking here:
-    //      - we will pass an updated opacity bars that are disappearing/re-appearing ()
-    //      - we will be doing a bounce down/up when we re-calc heights
-    //    
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        // gotta do something here about different transitions too
+    
+    componentDidUpdate(prevProps, prevState) {
         let bar = select(this.barRef.current);
-        let test = this.props.y;
-        // let test = transition()
-        //                 .duration(750)
-        //                 .ease()
-        //                 .attr("y", this.props.y)
-        //                 .on("end", () => 
-        //                     this.setState({
-        //                         y: this.props.y
-        //                     })
-        //                 );
 
-        // console.log(this.barRef.current);
-        // console.log(this.props.y);
+        if (this.props.opacity !== prevProps.opacity) {
+            this.props.opacity < prevProps.opacity ? this.fadeOut(bar) : this.fadeIn(bar)
+            // *** Check if one is larger for FadeIn and FadeOut
 
-        // bar.transition(transition)
-        //     .attr("y", this.props.y);
-        // bar.transition()
-        //     .duration(800)
-        //     .attr("y", test)
-        //     .on("end", () => 
-        //         this.setState({
-        //             y: test
-        //         })
-        //     );
+        } else if (this.props.y !== prevProps.y && this.props.height !== prevProps.height) {
 
-        d3.select(this.barRef.current)
-        .transition()
+            // changing year
+            this.yearUpdated(bar);
+
+        } else if (this.props.y !== prevProps.y) {
+            this.props.y > prevProps.y ? this.positionBars(bar) : this.restoreBars(bar)
+            // Check for bigger for transFormBars and restoreBars
+                // moving bars up and down
+        }
+    }
+
+    fadeOut(bar) {
+        bar.transition()
+        .duration(1000)
+        .ease(d3.easeBounce)
+        .attr("opacity", this.props.opacity)
+        .on("end", () => 
+            this.setState({
+                opacity: this.props.opacity
+            })
+        )
+    }
+
+    fadeIn(bar) {
+        bar.transition()
         .duration(1000)
         .delay(750)
-        .attr("y", test);
+        .attr("opacity", this.props.opacity)
+        .on("end", () => 
+            this.setState({
+                opacity: this.props.opacity
+            })
+        )
+    }
 
+    yearUpdated(bar) {
+        bar
+        .transition()
+        .duration(300)
+        .attr("y", this.props.y)
+        .transition()
+        .duration(300)
+        .attr("height", this.props.height)
+        .on("end", () => 
+        this.setState({
+            height: this.props.height,
+            y: this.props.y
+        }))
+    }
+
+    positionBars(bar) {
+        bar.transition()
+        .duration(1000)
+        .delay(750)
+        .attr("y", this.props.y)
+        .on("end", () => 
+            this.setState({
+                y: this.props.y
+            })
+        );
+    }
+
+    restoreBars(bar) {
+        bar.transition()
+        .duration(1000)
+        .attr("y", this.props.y)
+        .on("end", () => 
+            this.setState({
+                y: this.props.y
+            })
+        );
     }
 
     render() {
-        const { y } = this.state;
-        const { x, height, width, opacity } = this.props;
-        // console.log(this.props);
+        const { y, opacity, height } = this.state;
+        const { x, width } = this.props;
         return (
         <rect
             x={x}
             y={y}
-            height={ height }
+            height={height}
             width={width}
             opacity={opacity}
             ref={this.barRef}
