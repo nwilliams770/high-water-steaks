@@ -2,8 +2,6 @@ import React from 'react';
 
 export function showAxisTooltip(evt, key) {
     const tooltip = document.querySelector('.tooltip');
-    // console.log(evt.target.innerHTML);
-    // console.log(key);
 
     tooltip.innerHTML = key[evt.target.innerHTML];
     tooltip.style.display = 'block';
@@ -11,21 +9,13 @@ export function showAxisTooltip(evt, key) {
     tooltip.style.top = evt.pageY - 25 + 'px';
 }
   
-export function hideTooltip(evt) {
+export function hideTooltip() {
     const tooltip = document.querySelector('.tooltip');
     tooltip.style.display = 'none';
-
-    // if a Voronoi tooltip, must revert cell fill back
-    if (evt.target.dataset.hasOwnProperty('deaths')) {
-        evt.target.style.fill = 'transparent';
-        tooltip.classList.remove('voronoi');
-
-    }
-    return
 }
 
 const Tooltip = () => (
-    <div className='tooltip'><p></p></div>
+    <div className='tooltip'></div>
 )
 
 export default Tooltip;

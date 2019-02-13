@@ -22,8 +22,8 @@ class StackedBars extends React.Component {
                     opacity = this.calcOpacity(activeSubject, subject);
 
                     // console.log(`old y: ${y}`);
-                
-                if (activeSubject && activeSubject !== "poultry" && activeSubject === subject) {
+                console.log(`activeSubject: ${activeSubject}`)
+                if (this.subjectActive(subject, activeSubject)) {
                     // console.log("made it here to update y!");
                     y = this.calcTransform(data[i], subjectStack);
                     // console.log(`updated y: ${y}`);
@@ -47,6 +47,10 @@ class StackedBars extends React.Component {
 
         }
         return result
+    }
+
+    subjectActive(subject, activeSubject) {
+        return (activeSubject && activeSubject !== "poultry" && activeSubject === subject)
     }
 
     calcOpacity(activeSubject, subject) {
