@@ -37,9 +37,6 @@ export default class Axis extends React.Component {
 
     handleMouseOver(evt) {
         if (!this.props.tooltip) return;
-        console.log("evt.target");
-
-        console.log(evt.target);
         const { countryKey } = this.props;
         showAxisTooltip(evt, countryKey);
     }

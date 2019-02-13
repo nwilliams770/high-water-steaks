@@ -36,7 +36,6 @@ class Bar extends React.Component {
     fadeOut(bar) {
         bar.transition()
         .duration(1000)
-        .ease(d3.easeBounce)
         .attr("opacity", this.props.opacity)
         .on("end", () => 
             this.setState({
@@ -75,7 +74,8 @@ class Bar extends React.Component {
     positionBars(bar) {
         bar.transition()
         .duration(1000)
-        .delay(750)
+        .delay(1050)
+        .ease(d3.easeBounce)
         .attr("y", this.props.y)
         .on("end", () => 
             this.setState({
