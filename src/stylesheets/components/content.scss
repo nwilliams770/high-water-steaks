@@ -1,6 +1,30 @@
+
+
 .bars {
     .pork { fill: pink }
     .poultry { fill: red }
     .beef { fill: yellowgreen }
     .mutton { fill: blue }
+}
+
+.legend {
+    text-anchor: end;
+    .article {
+        font-size: 10px sans-serif;
+    }
+}
+
+.Axis-Left .tick line { 
+    stroke: $light-gray
+}
+.Axis-Bottom .tick line { 
+    display: none;
+}
+
+.domain {
+    display: none;
+}
+
+.tooltip {
+    position: absolute;
 }
