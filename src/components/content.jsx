@@ -5,12 +5,8 @@ import { csv } from 'd3-fetch';
 import { countries } from 'country-data';
 import BarChart from './bar_chart';
 import SelectorModule from './selector_module';
-
-// TO DO: 
-// Add methods to sort data?
-// Find max value for ENTIRE range so axes don't change on year selection?
-// add water consumption
-
+import { logos } from '../images/index';
+// Work on: 
 // UI/UX related:
 // - country tooltip
 // - legend
@@ -45,9 +41,11 @@ class Content extends React.Component {
     constructor() {
         super();
         this.state = {
-            year: '2019' // default value for this year
+            year: '2019', // default value for this year
+            activeSubject: ''
         };
         this.updateYear = this.updateYear.bind(this);
+        this.updateSubject = this.updateSubject.bind(this);
     }
 
     componentDidMount() {
@@ -94,12 +92,8 @@ class Content extends React.Component {
 
     processData(unsortedData) {
         const sorted = this.sortDataByCountry(unsortedData);
-
-
         const meatData = this.calcMeatStacks(sorted);
-        const waterData = this.calcWaterStacks(sorted);
-        console.log({meat: meatData, water: waterData});
-        
+        const waterData = this.calcWaterStacks(sorted);        
         return {meat: meatData, water: waterData};
     }
 
@@ -173,18 +167,43 @@ class Content extends React.Component {
         })
     }
 
+    updateSubject(subject) {
+        let currentSubject = this.state.activeSubject;
+
+
+        if (!currentSubject) {
+            this.setState({ activeSubject: subject });
+        } else if (currentSubject) {
+            if (subject === currentSubject) this.setState({ activeSubject: "" });
+        }
+        // if ()
+        // this needs to be refactored and put in content, we have to thread it to both bar charts
+    }
+
 
     render() {
         if (!this.state.meat || !this.state.water) return "";
         const margins = {top: 50, right: 20, bottom: 100, left: 60},
               svgDimensions = {width: 800, height: 500}
-        const { meat, year, emojis, water } = this.state;
+        const { meat, year, emojis, water, activeSubject } = this.state;
+        // Hard-coding this for UX purposes, I don't want the axis updating every time
+        // the client switches the year
+        const maxValMeat = 120,
+              maxValWater = 1200000;
+        const iconUrls = logos;
+
+        const countryKey = Object.keys(emojis).reduce(function(obj,key){
+            obj[ emojis[key] ] = key;
+            return obj;
+         },{});
+
 
         return (
             <div className='content'>
                 <SelectorModule
                     years={Object.keys(meat)}
                     updateYear={this.updateYear}
+                    defaultValue={year}
                 />
                 <BarChart
                     svgDimensions={svgDimensions}
@@ -192,6 +211,12 @@ class Content extends React.Component {
                     data={meat[year]}
                     year={year}
                     emojis={emojis}
+                    maxValue={maxValMeat}
+                    legendIcons={iconUrls}
+                    updateSubject={this.updateSubject}
+                    activeSubject={activeSubject}
+                    countryKey={countryKey}
+
                 />
                 <BarChart
                     svgDimensions={svgDimensions}
@@ -199,6 +224,9 @@ class Content extends React.Component {
                     data={water[year]}
                     year={year}
                     emojis={emojis}
+                    maxValue={maxValWater}
+                    activeSubject={activeSubject}
+                    countryKey={countryKey}
                 />
             </div>
         )
