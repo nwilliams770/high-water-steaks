@@ -1,10 +1,14 @@
 import React from 'react';
 import { select } from 'd3-selection';
 import * as d3Axis from 'd3-axis';
+import { showAxisTooltip, hideTooltip } from './tooltip';
 
 export default class Axis extends React.Component {
+    // Have to refactor tooltip or decide another function to use cause this one is whackkk
     constructor(props) {
         super();
+        // this.axisElement = React.createRef()
+        this.handleMouseOver = this.handleMouseOver.bind(this);
     }
 
     componentDidMount() {
@@ -13,6 +17,10 @@ export default class Axis extends React.Component {
     
     componentDidUpdate() {
         this.renderAxis()
+    }
+
+    componentWillUnmount() {
+
     }
 
     renderAxis() {
@@ -27,9 +35,20 @@ export default class Axis extends React.Component {
         axis(axisEl);
     }
 
+    handleMouseOver(evt) {
+        if (!this.props.tooltip) return;
+        console.log("evt.target");
+
+        console.log(evt.target);
+        const { countryKey } = this.props;
+        showAxisTooltip(evt, countryKey);
+    }
+
     render() {
         return (
           <g
+            onMouseOver={(evt) => this.handleMouseOver(evt)}
+            onMouseLeave={hideTooltip}
             className={`Axis Axis-${this.props.orient}`}
             ref={(el) => { this.axisElement = el; }}
             transform={this.props.translate}

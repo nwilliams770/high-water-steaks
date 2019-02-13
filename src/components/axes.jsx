@@ -1,20 +1,24 @@
 import React from 'react';
 import Axis from './axis';
 
-export default ({ scales, svgDimensions, margins }) => {
+export default ({ scales, svgDimensions, margins, countryKey }) => {
     const { height, width } = svgDimensions;
 
     const xProps = {
         orient: 'Bottom',
         scale: scales.xScale,
-        translate: `translate(0, ${height - margins.bottom})`,
+        translate: `translate(0,${height - margins.bottom})`,
         tickSize: height - margins.top - margins.bottom,
+        tooltip: true,
+        countryKey: countryKey
+
       }
     const yProps = {
         orient: 'Left',
         scale: scales.yScale,
         translate: `translate(${margins.left}, 0)`,
         tickSize: width - margins.left - margins.right,
+        tooltip: false
       }
     
     return (

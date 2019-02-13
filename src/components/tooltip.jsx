@@ -2,6 +2,9 @@ import React from 'react';
 
 export function showAxisTooltip(evt, key) {
     const tooltip = document.querySelector('.tooltip');
+    // console.log(evt.target.innerHTML);
+    // console.log(key);
+
     tooltip.innerHTML = key[evt.target.innerHTML];
     tooltip.style.display = 'block';
     tooltip.style.left = evt.pageX + 10 + 'px';
