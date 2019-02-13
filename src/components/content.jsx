@@ -173,18 +173,24 @@ class Content extends React.Component {
 
         if (!currentSubject) {
             this.setState({ activeSubject: subject });
+            document.querySelectorAll(".article").forEach(node => {
+                node.classList.contains(subject) ? node.classList.add("active") : node.classList.add("inactive");
+            })
         } else if (currentSubject) {
             if (subject === currentSubject) this.setState({ activeSubject: "" });
+            document.querySelectorAll(".article").forEach(node => {
+                node.classList.contains(subject) ? node.classList.remove("active") : node.classList.remove("inactive");
+            })
         }
-        // if ()
-        // this needs to be refactored and put in content, we have to thread it to both bar charts
     }
 
 
     render() {
         if (!this.state.meat || !this.state.water) return "";
         const margins = {top: 50, right: 20, bottom: 100, left: 60},
-              svgDimensions = {width: 800, height: 500}
+              svgDimensions = {width: 800, height: 500},
+              meatTitle = "Global Meat Consumption (Kg Per Capita)",
+              waterTitle = "Corresponding Water Consumption (Litres)"
         const { meat, year, emojis, water, activeSubject } = this.state;
         // Hard-coding this for UX purposes, I don't want the axis updating every time
         // the client switches the year
@@ -216,6 +222,7 @@ class Content extends React.Component {
                     updateSubject={this.updateSubject}
                     activeSubject={activeSubject}
                     countryKey={countryKey}
+                    title={meatTitle}
 
                 />
                 <BarChart
@@ -227,6 +234,8 @@ class Content extends React.Component {
                     maxValue={maxValWater}
                     activeSubject={activeSubject}
                     countryKey={countryKey}
+                    title={waterTitle}
+
                 />
             </div>
         )

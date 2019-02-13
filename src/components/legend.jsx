@@ -7,13 +7,13 @@ const Legend = ({ icons, svgDimensions, updateSubject }) => {
     const iconMarkup = subjects.map((subject, i) => {
         return (
         <g onClick={() => updateSubject(subject)} key={`${subject}-icon`} transform={`translate(0,${10 + i * 20})`} className={subject + " article"} >
-            <rect x={width - 24 } width={10} height={10} />
-            <text x={width - 32} y={9} >{subject}</text>
+            <rect x={width - 24 } width={12} height={12} />
+            <text x={width - 32} y={9}>{subject}</text>
         </g>
         )
     })
     return (
-        <g className="legend">
+        <g className="legend" transform={`translate(60, 0)`}>
             {iconMarkup}
         </g>
     )
