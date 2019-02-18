@@ -1,6 +1,6 @@
 import React from 'react';
 import { select } from 'd3-selection';
-import * as d3 from 'd3';
+import { easeBounce } from 'd3-ease'
 import 'd3-transition';
 
 class Bar extends React.Component {
@@ -16,20 +16,12 @@ class Bar extends React.Component {
     
     componentDidUpdate(prevProps, prevState) {
         let bar = select(this.barRef.current);
-
         if (this.props.opacity !== prevProps.opacity) {
             this.props.opacity < prevProps.opacity ? this.fadeOut(bar) : this.fadeIn(bar)
-            // *** Check if one is larger for FadeIn and FadeOut
-
         } else if (this.props.y !== prevProps.y && this.props.height !== prevProps.height) {
-
-            // changing year
             this.yearUpdated(bar);
-
         } else if (this.props.y !== prevProps.y) {
-            this.props.y > prevProps.y ? this.positionBars(bar) : this.restoreBars(bar)
-            // Check for bigger for transFormBars and restoreBars
-                // moving bars up and down
+            this.props.y > prevProps.y ? this.transformBar(bar) : this.restoreBar(bar)
         }
     }
 
@@ -71,11 +63,11 @@ class Bar extends React.Component {
         }))
     }
 
-    positionBars(bar) {
+    transformBar(bar) {
         bar.transition()
         .duration(1000)
-        .delay(1050)
-        .ease(d3.easeBounce)
+        .delay(800)
+        .ease(easeBounce)
         .attr("y", this.props.y)
         .on("end", () => 
             this.setState({
@@ -84,7 +76,7 @@ class Bar extends React.Component {
         );
     }
 
-    restoreBars(bar) {
+    restoreBar(bar) {
         bar.transition()
         .duration(1000)
         .attr("y", this.props.y)

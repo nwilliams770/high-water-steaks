@@ -4,13 +4,16 @@ import Bar from './bar';
 class StackedBars extends React.Component {
     constructor(props) {
         super(props);
-
         // this.colorScale = scaleLinear
     }
 
-    createGroups() {
-        const result = {"poultry": [], "pork": [], "mutton": [], "beef": []};
-        const { data, scales, svgDimensions, emojis, activeSubject } = this.props;
+    createBarGroups() {
+        // For each country, we are:
+            // -extracting the stack calcs for each subject
+            // -putting them to scale
+            // -passing them to the Bar component to track its own position
+        const result = {'poultry': [], 'pork': [], 'mutton': [], 'beef': []};
+        const { data, scales, activeSubject } = this.props;
         const { xScale, yScale } = scales; 
         for (let i = 0; i < data.length; i++) {
             for (let subject in result) {
@@ -20,22 +23,13 @@ class StackedBars extends React.Component {
                     height = yScale(subjectStack.y0) - yScale(subjectStack.y1),
                     width= xScale.bandwidth(),
                     opacity = this.calcOpacity(activeSubject, subject);
-
-                    // console.log(`old y: ${y}`);
-                console.log(`activeSubject: ${activeSubject}`)
                 if (this.subjectActive(subject, activeSubject)) {
-                    // console.log("made it here to update y!");
-                    y = this.calcTransform(data[i], subjectStack);
-                    // console.log(`updated y: ${y}`);
+                    y = this.calcBarTransformation(data[i], subjectStack);
 
                 }
                 result[subject].push(
                     <Bar
                         key={`${subject}-${i}`}
-                        // x={xScale(data[i].emoji)}
-                        // y={yScale(subjectStack.y1)}
-                        // height={ yScale(subjectStack.y0) - yScale(subjectStack.y1) }
-                        // width={xScale.bandwidth()}
                         x={x}
                         y={y}
                         height={height}
@@ -50,7 +44,8 @@ class StackedBars extends React.Component {
     }
 
     subjectActive(subject, activeSubject) {
-        return (activeSubject && activeSubject !== "poultry" && activeSubject === subject)
+        // Poultry is on the base of the graph and does not require tranformations
+        return (activeSubject && activeSubject !== 'poultry' && activeSubject === subject)
     }
 
     calcOpacity(activeSubject, subject) {
@@ -61,12 +56,11 @@ class StackedBars extends React.Component {
         }
     }
 
-    calcTransform(datum, subjectStack) {
-        const { margins } = this.props;
+    calcBarTransformation(datum, subjectStack) {
         const yScale = this.props.scales.yScale;
         // In order to calculate the new position, we are calculating it from the bottom-most
         // bar in our stack, which is always poultry!
-        let baseStack = datum.stacks.filter(obj => obj.subject === "poultry")[0],
+        let baseStack = datum.stacks.filter(obj => obj.subject === 'poultry')[0],
               currentHeight = yScale(subjectStack.y0) - yScale(subjectStack.y1),
               currentY = yScale(subjectStack.y1),
               baseHeight = yScale(baseStack.y0) - yScale(baseStack.y1),
@@ -77,22 +71,21 @@ class StackedBars extends React.Component {
         return updatedY;
     }
 
-
     render() {
-        const barGroups = this.createGroups();
+        const barGroups = this.createBarGroups();
 
         return (
-            <g className="bars">
-                <g className="poultry">
+            <g className='bars'>
+                <g className='poultry'>
                     {barGroups['poultry']}
                 </g>
-                <g className="pork">
+                <g className='pork'>
                     {barGroups['pork']}
                 </g>
-                <g className="beef">
+                <g className='beef'>
                     {barGroups['beef']}
                 </g>
-                <g className="mutton">
+                <g className='mutton'>
                     {barGroups['mutton']}
                 </g>
             </g>

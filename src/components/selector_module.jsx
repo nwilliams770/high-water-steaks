@@ -5,8 +5,6 @@ const SelectorModule = ({years, updateYear, defaultValue }) => {
     const options = years.map(year => {
         return { value: year, label: `${year}` }
     })
-
-    console.log(defaultValue);
     return (
         <div className='selector module'>
             <Select

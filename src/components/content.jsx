@@ -6,6 +6,15 @@ import { countries } from 'country-data';
 import BarChart from './bar_chart';
 import SelectorModule from './selector_module';
 import { logos } from '../images/index';
+
+// TO DO:
+// - Content
+        // - Deal with LegendIcons, we need to pass something, you want it in NavBar or On graph?
+//  - SelectorModule: 
+        // - Add Current Year if not delete the placeHolder value
+
+
+
 // Work on: 
 // UI/UX related:
 // - country tooltip
@@ -35,8 +44,6 @@ import { logos } from '../images/index';
 // However, on the other hand, the UK’s water footprint is 17,657 litres/kg of which 84 p
 // er cent is green water (14,900 litres), 15.2 per cent grey water (2,690 litres) and just 67 litres or 0.4 per cent is blue water.
 
-
-
 class Content extends React.Component {
     constructor() {
         super();
@@ -50,12 +57,13 @@ class Content extends React.Component {
 
     componentDidMount() {
         this.getData().then((parsedData) => {
+            const processedData = this.processData(parsedData);
             this.setState({ 
                 // uses emoji slice for adding to objects
-                meat: this.processData(parsedData).meat,
+                meat: processedData.meat,
                 // saving this slice for easy passing to axes
                 emojis: parsedData.emojis,
-                water: this.processData(parsedData).water
+                water: processedData.water
             });
         })
 
@@ -89,7 +97,6 @@ class Content extends React.Component {
         return unsortedData
     }
 
-
     processData(unsortedData) {
         const sorted = this.sortDataByCountry(unsortedData);
         const meatData = this.calcMeatStacks(sorted);
@@ -101,7 +108,6 @@ class Content extends React.Component {
         const orderedSubjects = ["poultry", "pork", "mutton", "beef"]
         const { water, ...clone } = JSON.parse(JSON.stringify(sortedData)); // copying to prevent mutation, have to remove water property to properly iterate
         for (let year in clone) {
-            // console.log(clone[year])
             clone[year].forEach(dataSet => {
                 let y0 = 0;
                 dataSet.stacks = orderedSubjects.map((subject) => {
@@ -114,12 +120,11 @@ class Content extends React.Component {
     }
 
     calcWaterStacks(sortedData) {
-        const { water, ...clone } = JSON.parse(JSON.stringify(sortedData));
         const orderedSubjects = ["poultry", "pork", "mutton", "beef"]
+        const { water, ...clone } = JSON.parse(JSON.stringify(sortedData)); // copying to prevent mutation, have to remove water property to properly iterate
         for (let year in clone) {
             clone[year].forEach(dataSet => {
                 orderedSubjects.forEach((subject) => dataSet[subject] *= +water[subject]) // Calc water cost per consumption value
-
                 let y0 = 0;
                 dataSet.stacks = orderedSubjects.map((subject) => {
                     return ({ subject: subject, y0: y0, y1: y0 += dataSet[subject]})
@@ -152,6 +157,7 @@ class Content extends React.Component {
     }
 
     instantiateStarterObject(yearRangeArray) {
+        // Used for parsing data and structuring in an easer-to-iterate format for later calculations
         const result = {'emojis': {}, 'data': {}};
         let currentYear = yearRangeArray[0];
         while (currentYear <= yearRangeArray[1]) {
@@ -169,40 +175,35 @@ class Content extends React.Component {
 
     updateSubject(subject) {
         let currentSubject = this.state.activeSubject;
-
-
         if (!currentSubject) {
             this.setState({ activeSubject: subject });
             document.querySelectorAll(".article").forEach(node => {
                 node.classList.contains(subject) ? node.classList.add("active") : node.classList.add("inactive");
             })
         } else if (currentSubject) {
-            if (subject === currentSubject) this.setState({ activeSubject: "" });
+            if (subject !== currentSubject) return;
+            this.setState({ activeSubject: "" });
             document.querySelectorAll(".article").forEach(node => {
                 node.classList.contains(subject) ? node.classList.remove("active") : node.classList.remove("inactive");
             })
         }
     }
 
-
     render() {
         if (!this.state.meat || !this.state.water) return "";
-        const margins = {top: 50, right: 20, bottom: 100, left: 60},
-              svgDimensions = {width: 800, height: 500},
-              meatTitle = "Global Meat Consumption (Kg Per Capita)",
-              waterTitle = "Corresponding Water Consumption (Litres)"
         const { meat, year, emojis, water, activeSubject } = this.state;
-        // Hard-coding this for UX purposes, I don't want the axis updating every time
-        // the client switches the year
-        const maxValMeat = 120,
-              maxValWater = 1200000;
+        const margins = {top: 50, right: 20, bottom: 100, left: 60},
+              svgDimensions = {width: 700, height: 450},
+              maxValMeat = 120, // Hard-coded to prevent axis from recalculating if client switches year 
+              maxValWater = 1200000, // Hard-coded to prevent axis from recalculating if client switches year
+              meatTitle = "Global Meat Consumption (Kg Per Capita)",
+              waterTitle = "Water Footprint (Litres)",
+              countryKey = Object.keys(emojis).reduce(function(obj,key){
+                obj[ emojis[key] ] = key;
+                return obj;
+                },{});
+    
         const iconUrls = logos;
-
-        const countryKey = Object.keys(emojis).reduce(function(obj,key){
-            obj[ emojis[key] ] = key;
-            return obj;
-         },{});
-
 
         return (
             <div className='content'>
@@ -215,7 +216,6 @@ class Content extends React.Component {
                     svgDimensions={svgDimensions}
                     margins={margins}
                     data={meat[year]}
-                    year={year}
                     emojis={emojis}
                     maxValue={maxValMeat}
                     legendIcons={iconUrls}
@@ -229,7 +229,6 @@ class Content extends React.Component {
                     svgDimensions={svgDimensions}
                     margins={margins}
                     data={water[year]}
-                    year={year}
                     emojis={emojis}
                     maxValue={maxValWater}
                     activeSubject={activeSubject}
