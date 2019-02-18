@@ -18,6 +18,7 @@ class App extends React.Component {
 const Navbar = () => (
   <div className='navbar'>
     <h1 className='title'>Meat, Meet Meat</h1>
+    <h2 className='subtitle'>Data-Source: <a href="http://www.oecd.org/" target="_blank" rel="noopener nonreferrer">Organization for Economic Co-Operation and Development</a> | <a href="https://www.worldwildlife.org/" target="_blank" rel="noopener nonreferrer">World Wildlife Foundation</a></h2>
   </div>
 )
 

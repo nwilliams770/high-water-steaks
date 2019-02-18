@@ -3,7 +3,7 @@ import React from 'react';
 const Legend = ({ icons, svgDimensions, updateSubject }) => {
     // no longer using icons, keeping data here for fickleness
     const { width } = svgDimensions;
-    const subjects = ["poultry", "pork", "mutton", "beef"]
+    const subjects = ["beef",  "mutton", "pork", "poultry"]
     const iconMarkup = subjects.map((subject, i) => {
         return (
         <g onClick={() => updateSubject(subject)} key={`${subject}-icon`} transform={`translate(0,${10 + i * 20})`} className={subject + " article"} >

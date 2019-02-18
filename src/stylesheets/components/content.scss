@@ -1,30 +1,69 @@
+.vis text:hover { cursor:default; }
 
+.navbar {
+    padding: 16px;
+    width: 100vw;
+    border-bottom: 1px solid $inactive;
+    font-family: $header;
+    .title {
+        font-size: 24px;
+        letter-spacing: 1px;
+        text-transform: capitalize;
+        font-weight: 300;
+    }
+    .subtitle {
+        color: #aaaaaa;
+        font-size: 12px;
+        font-style: italic;
+        padding-left: 10px;
+        a {
+            border-bottom: .2px solid #aaa;
+        }
+    }
+}
+
+.selector {
+    padding: 20px;
+    width: 300px;
+    font-size: 16px;
+
+}
 
 .bars {
-    .pork { fill: pink }
-    .poultry { fill: red }
-    .beef { fill: yellowgreen }
-    .mutton { fill: blue }
+    .pork { fill: $pork }
+    .poultry { fill: $poultry }
+    .beef { fill: $beef }
+    .mutton { fill: $mutton }
 }
 
 .legend {
     text-anchor: end;
     .article {
         font-size: 10px sans-serif;
+        &.active rect { stroke: $active;  stroke-width: 1.5px;} 
+        &.inactive text { fill: $inactive; }
+        &.pork rect { fill: $pork }
+        &.poultry rect { fill: $poultry }
+        &.beef rect { fill: $beef }
+        &.mutton rect { fill: $mutton }
     }
 }
 
 .Axis-Left .tick line { 
     stroke: $light-gray
 }
-.Axis-Bottom .tick line { 
-    display: none;
-}
+.Axis-Bottom .tick {
+    line { display: none; }
+    text { cursor: default; }
+} 
 
 .domain {
     display: none;
 }
 
 .tooltip {
+    padding: 6px 4px;
+    border-radius: 5px;
+    border: 1px solid $light-gray;
     position: absolute;
 }

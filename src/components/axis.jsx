@@ -7,7 +7,6 @@ export default class Axis extends React.Component {
     // Have to refactor tooltip or decide another function to use cause this one is whackkk
     constructor(props) {
         super();
-        // this.axisElement = React.createRef()
         this.handleMouseOver = this.handleMouseOver.bind(this);
     }
 
@@ -19,17 +18,13 @@ export default class Axis extends React.Component {
         this.renderAxis()
     }
 
-    componentWillUnmount() {
-
-    }
-
     renderAxis() {
         const axisType = `axis${this.props.orient}`
         const axis = d3Axis[axisType]()
           .scale(this.props.scale)
           .tickSize(-this.props.tickSize)
           .tickPadding([12])
-          .ticks([4])
+          .ticks(4, "s")
         const axisEl = select(this.axisElement);
     
         axis(axisEl);
