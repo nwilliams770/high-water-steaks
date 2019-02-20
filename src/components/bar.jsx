@@ -65,9 +65,9 @@ class Bar extends React.Component {
 
     transformBar(bar) {
         bar.transition()
-        .duration(1000)
-        .delay(800)
         .ease(easeBounce)
+        .duration(1000)
+        .delay(850)
         .attr("y", this.props.y)
         .on("end", () => 
             this.setState({
