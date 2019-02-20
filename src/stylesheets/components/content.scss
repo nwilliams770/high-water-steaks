@@ -1,4 +1,11 @@
+#root { overflow-x: hidden; } // Gets rid of the weird overscroll in Chrome
+
 .vis text:hover { cursor:default; }
+
+.content {
+    background-color: $background;
+    padding: 20px 40px;
+}
 
 .navbar {
     padding: 16px;
@@ -23,10 +30,23 @@
 }
 
 .selector {
-    padding: 20px;
+    padding-bottom: 20px;
     width: 300px;
     font-size: 16px;
+    font-family: $body;
+    font-weight: 100;
+    letter-spacing: 1px;
+}
 
+.vis {
+    background-color: white;
+    padding: 10px;
+    border: 1px solid $light-gray;
+    border-radius: 3px;
+    margin: 0 auto 20px;
+    font-family: $body;
+    &:nth-child(2) { margin-right: 20px; }
+    &:nth-child(3) { .bars rect { fill: $water; } }
 }
 
 .bars {
@@ -39,7 +59,8 @@
 .legend {
     text-anchor: end;
     .article {
-        font-size: 10px sans-serif;
+        font-size: 10px;
+        letter-spacing: 0.75px;
         &.active rect { stroke: $active;  stroke-width: 1.5px;} 
         &.inactive text { fill: $inactive; }
         &.pork rect { fill: $pork }
@@ -62,8 +83,12 @@
 }
 
 .tooltip {
+    font-family: $body;
+    letter-spacing: 0.5px;
     padding: 6px 4px;
     border-radius: 5px;
     border: 1px solid $light-gray;
+    background: rgba(255,255,255,0.90);
     position: absolute;
+    display: none;
 }
