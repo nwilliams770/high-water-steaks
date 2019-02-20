@@ -62,11 +62,12 @@
         font-size: 10px;
         letter-spacing: 0.75px;
         &.active rect { stroke: $active;  stroke-width: 1.5px;} 
-        &.inactive text { fill: $inactive; }
+        &.inactive { text { fill: $inactive; } rect { opacity: 0.5; }}
         &.pork rect { fill: $pork }
         &.poultry rect { fill: $poultry }
         &.beef rect { fill: $beef }
         &.mutton rect { fill: $mutton }
+        &:hover { cursor: pointer; }
     }
 }
 
