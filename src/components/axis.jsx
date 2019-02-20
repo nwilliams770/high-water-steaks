@@ -23,7 +23,7 @@ export default class Axis extends React.Component {
         const axis = d3Axis[axisType]()
           .scale(this.props.scale)
           .tickSize(-this.props.tickSize)
-          .tickPadding([12])
+          .tickPadding([18])
           .ticks(4, "s")
         const axisEl = select(this.axisElement);
     

@@ -105,7 +105,7 @@ class Content extends React.Component {
     }
 
     calcMeatStacks(sortedData) {
-        const orderedSubjects = ["poultry", "pork", "mutton", "beef"]
+        const orderedSubjects = ["poultry", "pork", "mutton", "beef"].reverse();
         const { water, ...clone } = JSON.parse(JSON.stringify(sortedData)); // copying to prevent mutation, have to remove water property to properly iterate
         for (let year in clone) {
             clone[year].forEach(dataSet => {
@@ -120,11 +120,10 @@ class Content extends React.Component {
     }
 
     calcWaterStacks(sortedData) {
-        const orderedSubjects = ["poultry", "pork", "mutton", "beef"]
+        const orderedSubjects = ["poultry", "pork", "mutton", "beef"].reverse();
         const { water, ...clone } = JSON.parse(JSON.stringify(sortedData)); // copying to prevent mutation, have to remove water property to properly iterate
         for (let year in clone) {
-            clone[year].forEach(dataSet => {
-                orderedSubjects.forEach((subject) => dataSet[subject] *= +water[subject]) // Calc water cost per consumption value
+            clone[year].forEach(dataSet => { orderedSubjects.forEach((subject) => dataSet[subject] *= +water[subject]) // Calc water cost per consumption value
                 let y0 = 0;
                 dataSet.stacks = orderedSubjects.map((subject) => {
                     return ({ subject: subject, y0: y0, y1: y0 += dataSet[subject]})
@@ -192,8 +191,8 @@ class Content extends React.Component {
     render() {
         if (!this.state.meat || !this.state.water) return "";
         const { meat, year, emojis, water, activeSubject } = this.state;
-        const margins = {top: 50, right: 20, bottom: 100, left: 60},
-              svgDimensions = {width: 700, height: 450},
+        const margins = {top: 50, right: 20, bottom: 50, left: 60},
+              svgDimensions = {width: 700, height: 380},
               maxValMeat = 120, // Hard-coded to prevent axis from recalculating if client switches year 
               maxValWater = 1200000, // Hard-coded to prevent axis from recalculating if client switches year
               meatTitle = "Global Meat Consumption (Kg Per Capita)",

@@ -25,7 +25,6 @@ class StackedBars extends React.Component {
                     opacity = this.calcOpacity(activeSubject, subject);
                 if (this.subjectActive(subject, activeSubject)) {
                     y = this.calcBarTransformation(data[i], subjectStack);
-
                 }
                 result[subject].push(
                     <Bar
@@ -45,7 +44,7 @@ class StackedBars extends React.Component {
 
     subjectActive(subject, activeSubject) {
         // Poultry is on the base of the graph and does not require tranformations
-        return (activeSubject && activeSubject !== 'poultry' && activeSubject === subject)
+        return (activeSubject && activeSubject !== 'beef' && activeSubject === subject)
     }
 
     calcOpacity(activeSubject, subject) {
@@ -60,7 +59,7 @@ class StackedBars extends React.Component {
         const yScale = this.props.scales.yScale;
         // In order to calculate the new position, we are calculating it from the bottom-most
         // bar in our stack, which is always poultry!
-        let baseStack = datum.stacks.filter(obj => obj.subject === 'poultry')[0],
+        let baseStack = datum.stacks.filter(obj => obj.subject === 'beef')[0],
               currentHeight = yScale(subjectStack.y0) - yScale(subjectStack.y1),
               currentY = yScale(subjectStack.y1),
               baseHeight = yScale(baseStack.y0) - yScale(baseStack.y1),
@@ -82,12 +81,13 @@ class StackedBars extends React.Component {
                 <g className='pork'>
                     {barGroups['pork']}
                 </g>
-                <g className='beef'>
-                    {barGroups['beef']}
-                </g>
                 <g className='mutton'>
                     {barGroups['mutton']}
                 </g>
+                <g className='beef'>
+                    {barGroups['beef']}
+                </g>
+
             </g>
         )
 
