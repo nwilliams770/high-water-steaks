@@ -5,9 +5,7 @@
   "private": true,
   "dependencies": {
     "country-data": "0.0.31",
-    "d3-array": "^2.0.3",
     "d3-axis": "^1.0.12",
-    "d3-dsv": "^1.0.10",
     "d3-ease": "^1.0.5",
     "d3-fetch": "^1.1.2",
     "d3-scale": "^2.2.2",
