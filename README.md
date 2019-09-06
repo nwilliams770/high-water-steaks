@@ -1,6 +1,8 @@
 # high-water-steaks
 🍖💧🍗 Meat consumption across the globe, from 1995 to 2025, and the resulting water footprint. Isolate by your meat of choice! D3.js, React. 
 
+See it [live](https://nwilliams770.github.io/high-water-steaks/)
+
 Datasource: [Organisation de coopération et de développement économiques](http://www.oecd.org/) and [World Wildlife Foundation](https://www.worldwildlife.org/)
 
 ### Features
